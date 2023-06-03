@@ -19,9 +19,10 @@ jobs:
       - name: Get AWS Access Token via OIDC
         uses: aws-actions/configure-aws-credentials@v2 # OIDC를 바로 사용할 수 있는 GitHub Actions
         with:
-          role-to-assume: arn:aws:iam::978567334665:role/hello-oidc-app.ausg.me # "이 Role을 필요해요"
+          role-to-assume: arn:aws:iam::978567334665:role/put-object-to-hello-oidc-app-only
+ # "이 Role을 필요해요"
           aws-region: ap-northeast-2
 
       - name: Copy index.html to S3 bucket
         run: |
-          aws s3 cp index.html s3://oidc-github-test/index.html
+          aws s3 cp index.html s3://hello-oidc-app.ausg.me/index.html
