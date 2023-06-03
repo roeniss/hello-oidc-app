@@ -1,0 +1,27 @@
+name: Update S3 bucket for web hosting
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Upload to Amazon S3
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write # JWT 받아서 업데이트
+      contents: read  # 깃헙 액션이 사용하도록 허락
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Get AWS Access Token via OIDC
+        uses: aws-actions/configure-aws-credentials@v2 # OIDC를 바로 사용할 수 있는 GitHub Actions
+        with:
+          role-to-assume: arn:aws:iam::978567334665:role/hello-oidc-app # "이 Role을 필요해요"
+          aws-region: ap-northeast-2
+
+      - name: Copy index.html to S3 bucket
+        run: |
+          aws s3 cp index.html s3://oidc-github-test/index.html
